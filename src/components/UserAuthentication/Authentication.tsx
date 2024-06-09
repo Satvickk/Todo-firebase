@@ -12,86 +12,84 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Mail } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast"
-
+import { useToast } from "@/components/ui/use-toast";
 
 // API Function
-import {
-    CreateUser,
-    LoginUser,
-    createUserWithGoogle
-} from '@/api/UserAuth'
+import { CreateUser, LoginUser, createUserWithGoogle } from "@/api/UserAuth";
+import { useNavigate } from "react-router-dom";
 
 export default function Authentication() {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
-    const [email, setEmail] = React.useState("")
-    const [password, setPassword] = React.useState("")
+  const { toast } = useToast();
+  const navigate = useNavigate()
 
-    const { toast } = useToast()
-
-    const handleCreate = async(email : string, password: string) => {
-        if(email !== "" && password !== ""){
-            const resp = await CreateUser(email, password)
-            if(resp.value){
-                console.log(resp.data)
-                toast({
-                    title: "User Registered"
-                })
-            }else{
-                toast({
-                    title: "Something Went Wrong",
-                    description: `${resp.message}`
-                })
-            }
-        setEmail("");
-        setPassword("")
-        return
-        }
+  const handleCreate = async (email: string, password: string) => {
+    if (email !== "" && password !== "") {
+      const resp = await CreateUser(email, password);
+      if (resp.value) {
+        console.log(resp.data);
         toast({
-            title: "Incomplete Details",
-            description: "Please Filled All the Details"
-        })
-    }
-
-    const handleCreateWithGoogle = async() => {
-        const resp = await createUserWithGoogle()
-        if(resp.value){
-            console.log(resp.data)
-            toast({
-                title: "User Registered"
-            })
-        }else{
-            toast({
-                title: "Something Went Wrong",
-                description: "Unable to Sign in with Google please select Other Method"
-            })
-        }
-    }
-
-
-    const handleLogin = async(email : string, password: string) => {
-        if(email !== "" && password !== ""){
-            const resp = await LoginUser(email, password)
-            if(resp.value){
-                console.log(resp.data)
-                toast({
-                    title: "Login Successfull"
-                })
-            }else{
-                toast({
-                    title: "Something Went Wrong",
-                    description: `${resp.message}`
-                })
-            }
-        setEmail("");
-        setPassword("")
-        return
-        }
+          title: "User Registered",
+        });
+        navigate('/')
+      } else {
         toast({
-            title: "Incomplete Credentials",
-            description: "Please Filled All the Details"
-        })
+          title: "Something Went Wrong",
+          description: `${resp.message}`,
+        });
+      }
+      setEmail("");
+      setPassword("");
+      return;
     }
+    toast({
+      title: "Incomplete Details",
+      description: "Please Filled All the Details",
+    });
+  };
+
+  const handleCreateWithGoogle = async () => {
+    const resp = await createUserWithGoogle();
+    if (resp.value) {
+      console.log(resp.data);
+      toast({
+        title: "User Registered",
+      });
+      navigate('/')
+    } else {
+      toast({
+        title: "Something Went Wrong",
+        description: "Unable to Sign in with Google please select Other Method",
+      });
+    }
+  };
+
+  const handleLogin = async (email: string, password: string) => {
+    if (email !== "" && password !== "") {
+      const resp = await LoginUser(email, password);
+      if (resp.value) {
+        console.log(resp.data);
+        toast({
+          title: "Login Successfull",
+        });
+        navigate('/')
+      } else {
+        toast({
+          title: "Something Went Wrong",
+          description: `${resp.message}`,
+        });
+      }
+      setEmail("");
+      setPassword("");
+      return;
+    }
+    toast({
+      title: "Incomplete Credentials",
+      description: "Please Filled All the Details",
+    });
+  };
 
   return (
     <div className="h-screen w-full bg-black flex justify-center items-center">
@@ -111,15 +109,29 @@ export default function Authentication() {
             <CardContent className="space-y-2">
               <div className="space-y-1">
                 <Label htmlFor="name">Email</Label>
-                <Input id="name" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <Input
+                  id="name"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
               </div>
               <div className="space-y-1">
                 <Label htmlFor="username">Password</Label>
-                <Input id="username" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <Input
+                  id="username"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
               </div>
             </CardContent>
             <CardFooter className="flex justify-between">
-              <Button onClick={() => handleCreate(email, password)}>Create Account</Button>
+              <Button onClick={() => handleCreate(email, password)}>
+                Create Account
+              </Button>
               <Button onClick={handleCreateWithGoogle}>
                 <Mail className="mr-2 h-4 w-4" /> Sign In with Google
               </Button>
@@ -140,7 +152,7 @@ export default function Authentication() {
                   type="email"
                   defaultValue="PedroDuarte@example.com"
                   required
-                  value={email} 
+                  value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
@@ -151,13 +163,15 @@ export default function Authentication() {
                   type="password"
                   defaultValue="@peduarte"
                   required
-                  value={password} 
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
             </CardContent>
             <CardFooter>
-              <Button onClick={() => handleLogin(email, password)}>Login</Button>
+              <Button onClick={() => handleLogin(email, password)}>
+                Login
+              </Button>
             </CardFooter>
           </Card>
         </TabsContent>
