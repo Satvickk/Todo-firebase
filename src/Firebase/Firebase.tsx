@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app'
+import { getAuth } from 'firebase/auth'
 
 interface configfile {
     apiKey: string,
@@ -21,3 +22,5 @@ const firebaseConfig : configfile = {
 
 
 export const Firebase = initializeApp(firebaseConfig)
+
+export const Auth = getAuth(Firebase)
