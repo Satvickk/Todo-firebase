@@ -5,14 +5,19 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar"
 import { useNavigate } from "react-router-dom"
+import { toast } from "../ui/use-toast"
+import { AddTodo, GetTodos } from "@/api/TodoCrud"
 
 export default function Header() {
 
   const navigate = useNavigate()
 
   function handleLogout() {
-    localStorage.removeItem("token")
+    localStorage.removeItem("uid")
     navigate('/')
+    toast({
+      title: "Logout Successful"
+    })
   }
 
   return (
@@ -21,10 +26,10 @@ export default function Header() {
     <div className="w-[220px]">
     <Menubar>
       <MenubarMenu>
-        <MenubarTrigger>Todos</MenubarTrigger>
+        <MenubarTrigger onClick={GetTodos}>Todos</MenubarTrigger>
       </MenubarMenu>
       <MenubarMenu>
-        <MenubarTrigger>Create</MenubarTrigger>
+        <MenubarTrigger onClick={() => AddTodo({title: "this is a title", description: "this is a description", created: (new Date()).toISOString().split('T')[0]})}>Create</MenubarTrigger>
       </MenubarMenu>
       <MenubarMenu>
         <MenubarTrigger onClick={handleLogout}>Logout</MenubarTrigger>

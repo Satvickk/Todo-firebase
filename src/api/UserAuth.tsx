@@ -7,7 +7,7 @@ const GoogleProvider = new GoogleAuthProvider()
 export const CreateUser = async(email : string, password : string) => {
     try {
         const resp = await createUserWithEmailAndPassword(Auth, email, password )
-        localStorage.setItem("token", resp.user.accessToken)
+        localStorage.setItem('uid', `${resp.user?.uid}`)
         return {value: true, data: resp.user}
     } catch (error) {
         console.log("Error ::", error)
@@ -19,7 +19,7 @@ export const CreateUser = async(email : string, password : string) => {
 export const LoginUser = async(email : string, password : string) => {
     try {
         const resp = await signInWithEmailAndPassword(Auth, email, password )
-        localStorage.setItem("token", resp.user.accessToken)
+        localStorage.setItem('uid', `${resp.user?.uid}`)
         return {value: true, data: resp.user}
     } catch (error) {
         console.log("Error ::", error)
@@ -28,11 +28,10 @@ export const LoginUser = async(email : string, password : string) => {
 
 }
 
-
 export const createUserWithGoogle = async() => {
     try {
         const resp = await signInWithPopup(Auth, GoogleProvider)
-        localStorage.setItem("token", resp.user.accessToken)
+        localStorage.setItem('uid', `${resp.user?.uid}`)
         return {value: true, data: resp.user}
     } catch (error) {
         console.log("Error ::", error)

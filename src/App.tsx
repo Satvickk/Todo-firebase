@@ -6,8 +6,8 @@ import { Toaster } from './components/ui/toaster'
 function App() {
   return (
     <div>
+      {localStorage.getItem("uid") ? <Dashboard /> : <Authentication />}
       <Toaster />
-      {localStorage.getItem("token") ? <Dashboard /> : <Authentication />}
     </div>
   )
 }

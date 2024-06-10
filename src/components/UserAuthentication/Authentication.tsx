@@ -29,11 +29,11 @@ export default function Authentication() {
     if (email !== "" && password !== "") {
       const resp = await CreateUser(email, password);
       if (resp.value) {
-        console.log(resp.data);
+        // console.log(resp.data);
         toast({
           title: "User Registered",
         });
-        navigate('/')
+        navigate('/dashboard')
       } else {
         toast({
           title: "Something Went Wrong",
@@ -53,11 +53,11 @@ export default function Authentication() {
   const handleCreateWithGoogle = async () => {
     const resp = await createUserWithGoogle();
     if (resp.value) {
-      console.log(resp.data);
+      // console.log(resp.data);
       toast({
         title: "User Registered",
       });
-      navigate('/')
+      navigate('/dashboard')
     } else {
       toast({
         title: "Something Went Wrong",
@@ -70,11 +70,10 @@ export default function Authentication() {
     if (email !== "" && password !== "") {
       const resp = await LoginUser(email, password);
       if (resp.value) {
-        console.log(resp.data);
         toast({
           title: "Login Successfull",
         });
-        navigate('/')
+        navigate('/dashboard')
       } else {
         toast({
           title: "Something Went Wrong",

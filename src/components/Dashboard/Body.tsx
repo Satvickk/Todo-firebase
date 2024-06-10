@@ -4,8 +4,8 @@ import TodoCard from "./Card";
 
 function Body() {
   return (
-    <ScrollArea className="h-full w-full sm:grid">
-      <div className="">
+    <ScrollArea className="h-full w-full">
+      <div className="grid sm:grid-cols-2 xl:grid-cols-3">
       <TodoCard />
       <TodoCard />
       <TodoCard />
