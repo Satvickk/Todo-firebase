@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useRef} from "react"
 import {
   Menubar,
   MenubarMenu,
@@ -7,11 +7,12 @@ import {
 import { useNavigate } from "react-router-dom"
 import { toast } from "../ui/use-toast"
 import { AddTodo, GetTodos } from "@/api/TodoCrud"
+import TodoForm from "./Form"
 
 export default function Header() {
 
+  const [isOpen, setIsOpen] = React.useState(false)
   const navigate = useNavigate()
-
   function handleLogout() {
     localStorage.removeItem("uid")
     navigate('/')
@@ -19,6 +20,11 @@ export default function Header() {
       title: "Logout Successful"
     })
   }
+
+  function handleFormOpen () {
+    setIsOpen(!isOpen)
+  }
+  
 
   return (
  <div className="bg-black w-full px-4 py-8 md:flex justify-around">
@@ -29,12 +35,13 @@ export default function Header() {
         <MenubarTrigger onClick={GetTodos}>Todos</MenubarTrigger>
       </MenubarMenu>
       <MenubarMenu>
-        <MenubarTrigger onClick={() => AddTodo({title: "this is a title", description: "this is a description", created: (new Date()).toISOString().split('T')[0]})}>Create</MenubarTrigger>
+        <MenubarTrigger onClick={handleFormOpen}>Create</MenubarTrigger>
       </MenubarMenu>
       <MenubarMenu>
         <MenubarTrigger onClick={handleLogout}>Logout</MenubarTrigger>
       </MenubarMenu>
     </Menubar>
+    <TodoForm isOpen={isOpen} isOpenChange={handleFormOpen}/>
     </div>
  </div>
   )

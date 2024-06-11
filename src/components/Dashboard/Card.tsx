@@ -9,18 +9,16 @@ import {
 } from "@/components/ui/card";
 import { Button } from "../ui/button";
 
-function TodoCard() {
+function TodoCard({id, title, description, created} : {id: string, title: string, description: string, created: string}) {
   return (
-    <Card className="bg-white min-w-[300px] text-wrap m-4">
+    <Card className="bg-white min-w-[300px] text-wrap m-4" id={id}>
       <CardHeader>
-        <CardTitle>Card Title</CardTitle>
-        <CardDescription>Card created Date</CardDescription>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{created}</CardDescription>
       </CardHeader>
       <CardContent>
         <p>
-          Jokester began sneaking into the castle in the middle of the night and
-          leaving jokes all over the place: under the king's pillow, in his
-          stop.
+          {description}
         </p>
       </CardContent>
       <CardFooter className="gap-3">

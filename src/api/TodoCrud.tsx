@@ -22,12 +22,11 @@ export const AddTodo = async(payload: IPayload) => {
 
 
 interface IGetTodo {
-    docId : string,
     title: string,
     created: string,
     description : string
+    docId : string,
 }
-
 
 export const GetTodos = async() => {
     try {
