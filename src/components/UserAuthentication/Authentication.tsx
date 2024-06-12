@@ -33,7 +33,7 @@ export default function Authentication() {
         toast({
           title: "User Registered",
         });
-        navigate('/dashboard')
+        navigate('/')
       } else {
         toast({
           title: "Something Went Wrong",
@@ -57,7 +57,7 @@ export default function Authentication() {
       toast({
         title: "User Registered",
       });
-      navigate('/dashboard')
+      navigate('/')
     } else {
       toast({
         title: "Something Went Wrong",
@@ -73,7 +73,7 @@ export default function Authentication() {
         toast({
           title: "Login Successfull",
         });
-        navigate('/dashboard')
+        navigate('/')
       } else {
         toast({
           title: "Something Went Wrong",

@@ -19,41 +19,58 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { AddTodo } from "@/api/TodoCrud";
+import { AddTodo, UpdateTodo } from "@/api/TodoCrud";
 import { useAppDispatch } from "@/features/hooks";
-import { addTodos } from "@/features/todoSlice";
+import { addTodo, updateTodo } from "@/features/todoSlice";
 
 const formSchema = z.object({
-  title: z.string(),
-  description: z.string()
+  title: z.string().nonempty("Title is required"),
+  description: z.string().nonempty("Description is required")
 });
 
-function TodoForm({isOpen, isOpenChange} : {isOpen : boolean, isOpenChange: any}) {
+interface TodoFormProps {
+  isOpen: boolean;
+  isOpenChange: () => void;
+  isEdit?: boolean;
+  docId?: string;
+  title?: string;
+  description?: string;
+}
+
+const TodoForm: React.FC<TodoFormProps> = ({ isOpen, isOpenChange, isEdit = false, docId = "", title = "", description = "" }) => {
   const dispatch = useAppDispatch();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      description: "",
+      title,
+      description,
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    const resp = await AddTodo({
-      ...values,
-      created: (new Date()).toISOString().split('T')[0]
-    });
-    dispatch(addTodos(resp));
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!isEdit) {
+      const resp = await AddTodo({
+        ...values,
+        created: new Date().toISOString().split('T')[0]
+      });
+      if (resp) dispatch(addTodo(resp));
+    } else {
+      const resp = await UpdateTodo({
+        ...values,
+        created: new Date().toISOString().split('T')[0]
+      }, docId);
+      if (resp) dispatch(updateTodo(resp));
+    }
     form.reset();
-    isOpenChange()
-  }
+    isOpenChange();
+  };
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => isOpenChange()}>
+    <Dialog open={isOpen} onOpenChange={isOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Todo</DialogTitle>
+          <DialogTitle>{isEdit ? "Edit Todo" : "Create Todo"}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -64,7 +81,7 @@ function TodoForm({isOpen, isOpenChange} : {isOpen : boolean, isOpenChange: any}
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input placeholder="title" {...field} />
+                    <Input placeholder="Title" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -78,7 +95,7 @@ function TodoForm({isOpen, isOpenChange} : {isOpen : boolean, isOpenChange: any}
                   <FormLabel>Description</FormLabel>
                   <FormControl>
                     <textarea
-                      placeholder="description"
+                      placeholder="Description"
                       className="flex h-52 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-800 dark:bg-gray-950 dark:ring-offset-gray-950 dark:placeholder:text-gray-400 dark:focus-visible:ring-gray-300"
                       {...field}
                     />
@@ -87,12 +104,12 @@ function TodoForm({isOpen, isOpenChange} : {isOpen : boolean, isOpenChange: any}
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit">{isEdit ? "Apply Changes" : "Submit"}</Button>
           </form>
         </Form>
       </DialogContent>
     </Dialog>
   );
-}
+};
 
 export default TodoForm;
