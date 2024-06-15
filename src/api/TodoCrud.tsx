@@ -1,11 +1,6 @@
 import { Firestore } from "@/Firebase/Firebase";
 import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc } from "firebase/firestore";
 
-interface IPayload {
-    title: string;
-    description: string;
-    created: string;
-}
 
 export const AddTodo = async (payload: IPayload) => {
     const id = localStorage.getItem('uid');
@@ -13,7 +8,7 @@ export const AddTodo = async (payload: IPayload) => {
         console.error("User ID not found in localStorage");
         return;
     }
-
+    
     try {
         const documentRef = collection(Firestore, "users", `${id}/todos`);
         const resp = await addDoc(documentRef, payload);
@@ -25,6 +20,11 @@ export const AddTodo = async (payload: IPayload) => {
     }
 };
 
+interface IPayload {
+    title: string;
+    description: string;
+    created: string;
+}
 export const UpdateTodo = async (payload: IPayload, docId: string) => {
     const id = localStorage.getItem('uid');
     if (!id) {
@@ -34,8 +34,8 @@ export const UpdateTodo = async (payload: IPayload, docId: string) => {
 
     try {
         const documentRef = doc(Firestore, "users", `${id}/todos/${docId}`);
-        await updateDoc(documentRef, payload);
-        return { ...payload, docId };
+        await updateDoc(documentRef, {...payload});
+        return { ...payload, docId: docId };
     } catch (error) {
         console.error("Error updating document:", error);
     }
@@ -54,11 +54,11 @@ export const GetTodos = async (): Promise<IGetTodo[]> => {
         console.error("User ID not found in localStorage");
         return [];
     }
-
+    
     try {
         const documentRef = collection(Firestore, "users", `${id}/todos`);
         const resp = await getDocs(documentRef);
-
+        
         if (!resp.empty) {
             const data: IGetTodo[] = [];
             resp.forEach((item) => {

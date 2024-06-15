@@ -49,6 +49,7 @@ const TodoForm: React.FC<TodoFormProps> = ({ isOpen, isOpenChange, isEdit = fals
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // console.log({...values, created: new Date().toISOString().split('T')[0]})
     if (!isEdit) {
       const resp = await AddTodo({
         ...values,

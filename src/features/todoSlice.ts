@@ -9,25 +9,25 @@ interface ITodo {
 
 type TodosState = ITodo[];
 
-const initialState: TodosState = [];
+const initialValues: TodosState = [];
 
 export const todoSlice = createSlice({
   name: 'Todo',
-  initialState,
+  initialState: initialValues,
   reducers: {
     setTodos: (state, action: PayloadAction<ITodo[]>) => {
-      return action.payload;
+      return action.payload; // Return the new state directly
     },
     addTodo: (state, action: PayloadAction<ITodo>) => {
-      state.push(action.payload);
+      state.push(action.payload); // Using Immer.js to handle state immutably
     },
     deleteTodo: (state, action: PayloadAction<string>) => {
-      return state.filter((item: ITodo) => item.docId !== action.payload);
+      return state.filter((item: ITodo) => item.docId !== action.payload); // Return new array without the deleted item
     },
     updateTodo: (state, action: PayloadAction<ITodo>) => {
       const index = state.findIndex(todo => todo.docId === action.payload.docId);
       if (index !== -1) {
-        state[index] = action.payload;
+        state[index] = action.payload; // Update the todo item at the found index
       }
     },
   },

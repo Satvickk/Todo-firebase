@@ -10,7 +10,7 @@ function App() {
   return (
     <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Authentication />} exact/>
+      <Route path="/" element={<Authentication />} />
       <Route path="*" element={<NotFound />} />
       <Route element={<PrivateRoute />}>
         <Route element={<Dashboard />} path="/dashboard" />

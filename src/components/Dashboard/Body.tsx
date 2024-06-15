@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import TodoCard from "./Card";
 import { useAppSelector } from "@/features/hooks";
@@ -7,13 +7,11 @@ import { RootState } from "@/features/store/store";  // Assuming you have a Root
 import { GetTodos } from "@/api/TodoCrud";
 import { setTodos } from "@/features/todoSlice";
 import { useAppDispatch } from "@/features/hooks";
-import { useNavigate } from "react-router-dom";
 
 
 export default function Body() {
 
   const dispatch = useAppDispatch()
-  const navigate = useNavigate()
   const Todos = useAppSelector((state: RootState) => state.Todo);
 
   interface ITodo {
