@@ -15,19 +15,19 @@ export const todoSlice = createSlice({
   name: 'Todo',
   initialState: initialValues,
   reducers: {
-    setTodos: (state, action: PayloadAction<ITodo[]>) => {
-      return action.payload; // Return the new state directly
+    setTodos: (_, action: PayloadAction<ITodo[]>) => {
+      return action.payload; // Directly returning the payload as the new state
     },
     addTodo: (state, action: PayloadAction<ITodo>) => {
       state.push(action.payload); // Using Immer.js to handle state immutably
     },
     deleteTodo: (state, action: PayloadAction<string>) => {
-      return state.filter((item: ITodo) => item.docId !== action.payload); // Return new array without the deleted item
+      return state.filter((item: ITodo) => item.docId !== action.payload); // Returning new array without the deleted item
     },
     updateTodo: (state, action: PayloadAction<ITodo>) => {
       const index = state.findIndex(todo => todo.docId === action.payload.docId);
       if (index !== -1) {
-        state[index] = action.payload; // Update the todo item at the found index
+        state[index] = action.payload; // Updating the todo item at the found index
       }
     },
   },
