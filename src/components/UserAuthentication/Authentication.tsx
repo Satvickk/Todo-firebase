@@ -11,15 +11,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Mail } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 // API Function
 import { CreateUser, LoginUser, createUserWithGoogle } from "@/api/UserAuth";
 import { useNavigate } from "react-router-dom";
-import { GetTodos } from "@/api/TodoCrud";
-import { setTodos } from "@/features/todoSlice";
-import { useAppDispatch } from "@/features/hooks";
+
 
 export default function Authentication() {
   const [email, setEmail] = React.useState("");
@@ -27,7 +24,6 @@ export default function Authentication() {
 
   const { toast } = useToast();
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
 
   const handleCreate = async (email: string, password: string) => {
     if (email !== "" && password !== "") {
@@ -68,12 +64,6 @@ export default function Authentication() {
     }
   };
 
-  interface ITodo {
-    docId: string;
-    created: string;
-    description: string;
-    title: string;
-  }
 
   const handleLogin = async (email: string, password: string) => {
     if (email !== "" && password !== "") {
@@ -82,8 +72,6 @@ export default function Authentication() {
         toast({
           title: "Login Successfull",
         });
-        const resp: Array<ITodo> = await GetTodos();
-        dispatch(setTodos(resp))
         navigate('/dashboard')
       } else {
         toast({
@@ -138,12 +126,13 @@ export default function Authentication() {
                 />
               </div>
             </CardContent>
-            <CardFooter className="flex justify-between">
+            <CardFooter className="flex gap-4">
               <Button onClick={() => handleCreate(email, password)}>
                 Create Account
               </Button>
               <Button onClick={handleCreateWithGoogle}>
-                <Mail className="mr-2 h-4 w-4" /> Sign In with Google
+                {/* <Mail className="mr-2 h-4 w-4" />  */}
+                Sign In with Google
               </Button>
             </CardFooter>
           </Card>

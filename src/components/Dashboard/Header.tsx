@@ -10,6 +10,8 @@ import { GetTodos } from "@/api/TodoCrud"
 import TodoForm from "./Form"
 import { useAppDispatch } from "@/features/hooks"
 import { setTodos } from "@/features/todoSlice"
+import { NotepadText } from 'lucide-react';
+
 
 export default function Header() {
 
@@ -35,7 +37,7 @@ export default function Header() {
 
   return (
  <div className="bg-black w-full px-4 py-8 md:flex justify-around">
-    <h2 className="text-3xl text-white mb-4">Todo App</h2>
+    <div className="text-3xl text-white mb-4 flex items-center"><NotepadText className="mx-2" size={35}/> <h1>Todo App</h1></div>
     <div className="w-[220px]">
     <Menubar>
       <MenubarMenu>

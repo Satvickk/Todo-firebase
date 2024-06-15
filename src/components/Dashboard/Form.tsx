@@ -67,7 +67,7 @@ const TodoForm: React.FC<TodoFormProps> = ({ isOpen, isOpenChange, isEdit = fals
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={isOpenChange}>
+    <Dialog open={isOpen} onOpenChange={isOpenChange} >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{isEdit ? "Edit Todo" : "Create Todo"}</DialogTitle>

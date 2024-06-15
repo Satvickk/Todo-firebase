@@ -1,14 +1,22 @@
-import React from 'react'
-import Authentication from '@/components/UserAuthentication/Authentication'
-import Dashboard from './components/Dashboard/Dashboard'
-import { Toaster } from './components/ui/toaster'
+import Dashboard from "./components/Dashboard/Dashboard.tsx";
+import Authentication from "./components/UserAuthentication/Authentication.tsx";
+import PrivateRoute from "./lib/PrivateRoute.tsx";
+import NotFound from "./components/NotFound/NotFound.tsx";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+
 
 function App() {
   return (
-    <div>
-      {localStorage.getItem("uid") ? <Dashboard /> : <Authentication />}
-      <Toaster />
-    </div>
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Authentication />} exact/>
+      <Route path="*" element={<NotFound />} />
+      <Route element={<PrivateRoute />}>
+        <Route element={<Dashboard />} path="/dashboard" />
+      </Route>
+    </Routes>
+  </BrowserRouter>
   )
 }
 
