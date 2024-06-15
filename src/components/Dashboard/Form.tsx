@@ -104,7 +104,7 @@ const TodoForm: React.FC<TodoFormProps> = ({ isOpen, isOpenChange, isEdit = fals
                 </FormItem>
               )}
             />
-            <Button type="submit">{isEdit ? "Apply Changes" : "Submit"}</Button>
+            <Button type="submit">{isEdit ? "Apply Changes" : "Create"}</Button>
           </form>
         </Form>
       </DialogContent>

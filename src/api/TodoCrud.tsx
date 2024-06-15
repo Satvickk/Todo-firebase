@@ -1,8 +1,6 @@
 import { Firestore } from "@/Firebase/Firebase";
 import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc } from "firebase/firestore";
 
-const id = localStorage.getItem('uid');
-
 interface IPayload {
     title: string;
     description: string;
@@ -10,6 +8,12 @@ interface IPayload {
 }
 
 export const AddTodo = async (payload: IPayload) => {
+    const id = localStorage.getItem('uid');
+    if (!id) {
+        console.error("User ID not found in localStorage");
+        return;
+    }
+
     try {
         const documentRef = collection(Firestore, "users", `${id}/todos`);
         const resp = await addDoc(documentRef, payload);
@@ -22,6 +26,12 @@ export const AddTodo = async (payload: IPayload) => {
 };
 
 export const UpdateTodo = async (payload: IPayload, docId: string) => {
+    const id = localStorage.getItem('uid');
+    if (!id) {
+        console.error("User ID not found in localStorage");
+        return;
+    }
+
     try {
         const documentRef = doc(Firestore, "users", `${id}/todos/${docId}`);
         await updateDoc(documentRef, payload);
@@ -39,17 +49,20 @@ interface IGetTodo {
 }
 
 export const GetTodos = async (): Promise<IGetTodo[]> => {
+    const id = localStorage.getItem('uid');
+    if (!id) {
+        console.error("User ID not found in localStorage");
+        return [];
+    }
+
     try {
-        console.log("Fetching todos for user ID:", id);
         const documentRef = collection(Firestore, "users", `${id}/todos`);
         const resp = await getDocs(documentRef);
-        console.log("Response from Firestore:", resp);
-        
+
         if (!resp.empty) {
-            const data: Array<IGetTodo> = [];
+            const data: IGetTodo[] = [];
             resp.forEach((item) => {
-                const todoData = { docId: item.id, ...item.data() };
-                console.log("Fetched todo:", todoData);
+                const todoData = { docId: item.id, ...item.data() } as IGetTodo;
                 data.push(todoData);
             });
             return data;
@@ -63,14 +76,19 @@ export const GetTodos = async (): Promise<IGetTodo[]> => {
     }
 };
 
-
-
 export const DeleteTodos = async (docId: string) => {
+    const id = localStorage.getItem('uid');
+    if (!id) {
+        console.error("User ID not found in localStorage");
+        return false;
+    }
+
     try {
         const documentRef = doc(Firestore, "users", `${id}/todos/${docId}`);
         await deleteDoc(documentRef);
-        return true
+        return true;
     } catch (error) {
-        console.error("Error updating document:", error);
+        console.error("Error deleting document:", error);
+        return false;
     }
-}
+};

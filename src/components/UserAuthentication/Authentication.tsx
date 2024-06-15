@@ -17,6 +17,9 @@ import { useToast } from "@/components/ui/use-toast";
 // API Function
 import { CreateUser, LoginUser, createUserWithGoogle } from "@/api/UserAuth";
 import { useNavigate } from "react-router-dom";
+import { GetTodos } from "@/api/TodoCrud";
+import { setTodos } from "@/features/todoSlice";
+import { useAppDispatch } from "@/features/hooks";
 
 export default function Authentication() {
   const [email, setEmail] = React.useState("");
@@ -24,16 +27,16 @@ export default function Authentication() {
 
   const { toast } = useToast();
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
   const handleCreate = async (email: string, password: string) => {
     if (email !== "" && password !== "") {
       const resp = await CreateUser(email, password);
       if (resp.value) {
-        // console.log(resp.data);
         toast({
           title: "User Registered",
         });
-        navigate('/')
+        navigate('/dashboard')
       } else {
         toast({
           title: "Something Went Wrong",
@@ -53,11 +56,10 @@ export default function Authentication() {
   const handleCreateWithGoogle = async () => {
     const resp = await createUserWithGoogle();
     if (resp.value) {
-      // console.log(resp.data);
       toast({
         title: "User Registered",
       });
-      navigate('/')
+      navigate('/dashboard')
     } else {
       toast({
         title: "Something Went Wrong",
@@ -66,6 +68,13 @@ export default function Authentication() {
     }
   };
 
+  interface ITodo {
+    docId: string;
+    created: string;
+    description: string;
+    title: string;
+  }
+
   const handleLogin = async (email: string, password: string) => {
     if (email !== "" && password !== "") {
       const resp = await LoginUser(email, password);
@@ -73,7 +82,9 @@ export default function Authentication() {
         toast({
           title: "Login Successfull",
         });
-        navigate('/')
+        const resp: Array<ITodo> = await GetTodos();
+        dispatch(setTodos(resp))
+        navigate('/dashboard')
       } else {
         toast({
           title: "Something Went Wrong",
