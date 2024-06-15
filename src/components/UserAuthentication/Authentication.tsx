@@ -125,6 +125,7 @@ export default function Authentication() {
                   required
                 />
               </div>
+              <p className="text-xs">Default Login credentials are provided in login tab</p>
             </CardContent>
             <CardFooter className="flex gap-4">
               <Button onClick={() => handleCreate(email, password)}>
@@ -166,6 +167,8 @@ export default function Authentication() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
+              <p className="text-xs">Email : Test@gmail.com</p>
+              <p className="text-xs">Password : Test@123</p>
             </CardContent>
             <CardFooter>
               <Button onClick={() => handleLogin(email, password)}>
