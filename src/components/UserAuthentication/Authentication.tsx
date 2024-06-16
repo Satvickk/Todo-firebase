@@ -14,7 +14,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
 
 // API Function
-import { CreateUser, LoginUser, createUserWithGoogle } from "@/api/UserAuth";
+// import { CreateUser, LoginUser, createUserWithGoogle } from "@/api/UserAuth";
+import { CreateUser, LoginUser } from "@/api/UserAuth";
 import { useNavigate } from "react-router-dom";
 
 
@@ -49,20 +50,20 @@ export default function Authentication() {
     });
   };
 
-  const handleCreateWithGoogle = async () => {
-    const resp = await createUserWithGoogle();
-    if (resp.value) {
-      toast({
-        title: "User Registered",
-      });
-      navigate('/dashboard')
-    } else {
-      toast({
-        title: "Something Went Wrong",
-        description: "Unable to Sign in with Google please select Other Method",
-      });
-    }
-  };
+  // const handleCreateWithGoogle = async () => {
+  //   const resp = await createUserWithGoogle();
+  //   if (resp.value) {
+  //     toast({
+  //       title: "User Registered",
+  //     });
+  //     navigate('/dashboard')
+  //   } else {
+  //     toast({
+  //       title: "Something Went Wrong",
+  //       description: "Unable to Sign in with Google please select Other Method",
+  //     });
+  //   }
+  // };
 
 
   const handleLogin = async (email: string, password: string) => {
@@ -131,10 +132,9 @@ export default function Authentication() {
               <Button onClick={() => handleCreate(email, password)}>
                 Create Account
               </Button>
-              <Button onClick={handleCreateWithGoogle}>
-                {/* <Mail className="mr-2 h-4 w-4" />  */}
+              {/* <Button onClick={handleCreateWithGoogle}>
                 Sign In with Google
-              </Button>
+              </Button> */}
             </CardFooter>
           </Card>
         </TabsContent>
